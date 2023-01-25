@@ -17,23 +17,33 @@ for folder in */ ; do
     fi
 
     # Get current branch name of the subfolder
-    ## current_branch=$(git rev-parse --abbrev-ref HEAD)
+    current_branch=$(git rev-parse --abbrev-ref HEAD)
 
     # Check the status of the current branch
     git_status=$(git status)
 
-    # Print the folder name and git status in table format
+    statuses=""
     if [[ $git_status == *"Your branch is up to date"* ]]; then
-        printf "%-30s %-30s\n" "$folder" "✅ Up-to-date"
-    elif [[ $git_status == *"Your branch is behind"* ]]; then
-        printf "%-30s %-30s\n" "$folder" "🔽 Behind Remote"
-    elif [[ $git_status == *"Your branch is ahead"* ]]; then
-        printf "%-30s %-30s\n" "$folder" "🔼 Ahead of Remote"
-    elif [[ $git_status == *"Changes not staged for commit"* ]]; then
-        printf "%-30s %-30s\n" "$folder" "💩 Changes not committed"
-    else
-        printf "%-30s %-30s\n" "$folder" "❓ Other Status"
+        statuses+="✅ Up-to-date "
     fi
+    if [[ $git_status == *"Your branch is behind"* ]]; then
+        statuses+="🔽 Behind Remote "
+    fi
+    if [[ $git_status == *"Your branch is ahead"* ]]; then
+        statuses+="🔼 Ahead of Remote "
+    fi
+    if [[ $git_status == *"Changes not staged for commit"* ]]; then
+        statuses+="💩 Changes not committed "
+    fi
+    if [[ $git_status == *"Untracked files"* ]]; then
+        statuses+="🚫 Untracked files"
+    fi
+    if [[ -z $statuses ]]; then
+        statuses="❓ Other Status"
+    fi
+
+    # Print the folder name and git status in table format
+    printf "%-30s %-30s\n" "$folder" "$statuses"
 
     # Go back to the parent folder
     cd ..
