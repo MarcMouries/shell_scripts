@@ -24,7 +24,7 @@ for folder in */ ; do
 
     statuses=""
     if [[ $git_status == *"Your branch is up to date"* ]]; then
-        statuses+="✅ Up-to-date "
+        statuses+="✅ Up-to-date with remote repo"
     fi
     if [[ $git_status == *"Your branch is behind"* ]]; then
         statuses+="🔽 Behind Remote "
@@ -33,10 +33,10 @@ for folder in */ ; do
         statuses+="🔼 Ahead of Remote "
     fi
     if [[ $git_status == *"Changes not staged for commit"* ]]; then
-        statuses+="💩 Changes not committed "
+        statuses+=" 💩 Changes not committed "
     fi
     if [[ $git_status == *"Untracked files"* ]]; then
-        statuses+="🚫 Untracked files"
+        statuses+=" 🚫 Untracked files"
     fi
     if [[ -z $statuses ]]; then
         statuses="❓ Other Status"
