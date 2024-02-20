@@ -19,10 +19,17 @@ for folder in */ ; do
     # Get current branch name of the subfolder
     current_branch=$(git rev-parse --abbrev-ref HEAD)
 
+    # Determine if the local branch is behind the remote tracking branch
+    behind_count=$(git rev-list --count HEAD..@{upstream} 2>/dev/null)
+
     # Check the status of the current branch
     git_status=$(git status)
 
     statuses=""
+
+    if [[ $behind_count -gt 0 ]]; then
+        statuses+="🔽 Behind Remote by $behind_count commits"
+    fi
     if [[ $git_status == *"Your branch is up to date"* ]]; then
         statuses+="✅ Up-to-date with remote repo"
     fi
